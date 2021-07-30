@@ -9,12 +9,6 @@ export class AppComponent {
 
   loadedFeature = 'recipe';
 
-  oddNumbers = [1, 3, 5];
-  evenNumbers = [2, 4];
-  onlyOdd = false;
-  value = 10;
-
-
   onNavigate(feature: string) {
     this.loadedFeature = feature;
   }
