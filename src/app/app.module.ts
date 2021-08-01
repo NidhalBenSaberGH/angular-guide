@@ -11,6 +11,7 @@ import { UserComponent } from './users/user/user.component';
 import { EditServerComponent } from './servers/edit-server/edit-server.component';
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
+import {AppRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ServersService } from './servers/servers.service';
   imports: [
     BrowserModule,
     FormsModule,
+    AppRoutingModule
   ],
   providers: [ServersService],
   bootstrap: [AppComponent]
