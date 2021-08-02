@@ -33,8 +33,9 @@ export class EditServerComponent implements OnInit, CanComponentDeactivate {
 
     });
 
+    const id = +this.route.snapshot.params['id'];
     // @ts-ignore
-    this.server = this.serversService.getServer(1);
+    this.server = this.serversService.getServer(id);
     this.serverName = this.server.name;
     this.serverStatus = this.server.status;
   }
