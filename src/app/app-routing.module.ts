@@ -11,13 +11,21 @@ import {AuthGuard} from "./auth-guard.service";
 
 const appRoutes = [
   {path: '', component: HomeComponent},
-  {path: 'users', component: UsersComponent, children: [
+  {
+    path: 'users', component: UsersComponent, children: [
       {path: ':id/:name', component: UserComponent},
-    ]},
-  {path: 'servers', canActivate: [AuthGuard], component: ServersComponent, children: [
-      {path: ':id', component: ServerComponent},
-      {path: ':id/edit', component: EditServerComponent},
-    ]},
+    ]
+  },
+  {
+    path: 'servers',
+    // canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    component: ServersComponent,
+      children: [
+        {path: ':id', component: ServerComponent},
+        {path: ':id/edit', component: EditServerComponent},
+      ]
+  },
 
   {path: 'not-found', component: PageNotFoundComponent},
   {path: '**', redirectTo: '/not-found'}
