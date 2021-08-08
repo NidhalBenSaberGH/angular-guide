@@ -31,6 +31,30 @@ export class AppComponent implements OnInit {
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     });
+
+    this.signupForm.valueChanges.subscribe(
+      (value) => console.log(value)
+    );
+    this.signupForm.statusChanges.subscribe(
+      (status) => console.log(status)
+    );
+
+    this.signupForm.setValue({
+      'userData': {
+        'username': 'Max',
+        'email': 'max@test.com'
+      },
+      'gender': 'male',
+      'hobbies': []
+    });
+
+    this.signupForm.patchValue({
+      'userData': {
+        'username': 'Anna',
+      }
+    });
+
+
   }
 
   onsubmit() {
