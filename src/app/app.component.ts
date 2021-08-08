@@ -1,5 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
+import {Observable, of} from "rxjs";
+import {delay, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-root',
@@ -16,9 +26,8 @@ export class AppComponent implements OnInit {
     this.signupForm = new FormGroup({
       'userData': new FormGroup({
         'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
-        'email': new FormControl(null, [Validators.required, Validators.email])
+        'email': new FormControl(null, [Validators.required, Validators.email], this.emailValidator())
       }),
-
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     });
@@ -30,10 +39,10 @@ export class AppComponent implements OnInit {
 
   onAddHobby() {
     const control = new FormControl(null, Validators.required);
-    (<FormArray> this.signupForm.get('hobbies')).push(control);
+    (<FormArray>this.signupForm.get('hobbies')).push(control);
   }
 
-  getControls(controlName : string) {
+  getControls(controlName: string) {
     return (this.signupForm.get(controlName) as FormArray).controls;
   }
 
@@ -45,4 +54,28 @@ export class AppComponent implements OnInit {
     // @ts-ignore
     return null;
   }
+
+  checkIfEmailExists(email: string): Observable<boolean> {
+    // normally, this is where you will connect to your backend for validation lookup
+    // using http, we simulate an internet connection by delaying it by a second
+    return of(email === 'test@test.com').pipe(delay(1500));
+  }
+
+  emailValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.checkIfEmailExists(control.value).pipe(
+        map(res => {
+          // if res is true, email exists, return true
+          return res ? { emailIsForbidden: true } : null;
+          // NB: Return null if there is no error
+        })
+      );
+    };
+  }
+
+
+
+
+
+
 }

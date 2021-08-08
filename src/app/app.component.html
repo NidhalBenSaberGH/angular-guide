@@ -11,18 +11,9 @@
               class="form-control"
               formControlName="username"
             >
-<!--            <span class="text-danger"-->
-<!--                  *ngIf="!signupForm.get('userData.username')?.valid && signupForm.get('userData.username')?.touched">T-->
-<!--              <span class="text-danger" *ngIf="signupForm.get('userData.username')?.errors?.nameIsForbidden">-->
-<!--                This name is invalid!-->
-<!--              </span>-->
-<!--              <span *ngIf="!signupForm.get('userData.username')?.errors?.required">-->
-<!--                This field is required!-->
-<!--              </span>-->
-<!--            </span>-->
             <span
               *ngIf="!signupForm.get('userData.username')?.valid && signupForm.get('userData.username')?.touched"
-              class="help-block">
+              class="text-danger">
               <span *ngIf="signupForm.get('userData.username')?.errors?.nameIsForbidden">This name is invalid!</span>
               <span *ngIf="signupForm.get('userData.username')?.errors?.required">This field is required!</span>
 
@@ -37,8 +28,13 @@
               id="email"
               class="form-control"
               formControlName="email">
-            <span class="text-danger"
-                  *ngIf="!signupForm.get('userData.email')?.valid && signupForm.get('userData.email')?.touched">Please enter a valid email!</span>
+            <span
+              *ngIf="!signupForm.get('userData.email')?.valid && signupForm.get('userData.email')?.touched"
+              class="text-danger">
+              <span *ngIf="signupForm.get('userData.email')?.errors?.emailIsForbidden">This email is used before!</span>
+              <span *ngIf="signupForm.get('userData.email')?.errors?.required">This field is required!</span>
+
+            </span>
           </div>
         </div>
         <div class="radio" *ngFor="let gender of genders">
