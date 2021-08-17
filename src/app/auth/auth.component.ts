@@ -12,6 +12,7 @@ export class AuthComponent implements OnInit {
 
   isLoginMode = true;
   isLoading = false;
+  error = null;
 
   constructor(private authService: AuthService) {
   }
@@ -32,14 +33,20 @@ export class AuthComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
 
+    this.isLoading = true;
+
     if (this.isLoginMode) {
 
     } else {
       this.authService.signUp(email, password).subscribe(response => {
           console.log(response);
+          this.isLoading = false;
         },
         error => {
           console.log(error);
+          // @ts-ignore
+          this.error = 'An error occurred!';
+          this.isLoading = false;
         });
     }
     form.reset();
