@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
+import {from} from "rxjs";
 
 @Component({
   selector: 'app-auth',
@@ -9,6 +10,7 @@ import {NgForm} from "@angular/forms";
 export class AuthComponent implements OnInit {
 
   isLoginMode = true;
+  isLoading = false;
 
   constructor() {
   }
@@ -21,7 +23,18 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
+
+    if (!form.valid) {
+      return;
+    }
+
+    const email = form.value.email;
+    const password = form.value.password;
+
+    if (this.isLoginMode) {
+
+    } else {
+    }
     form.reset();
   }
 }
