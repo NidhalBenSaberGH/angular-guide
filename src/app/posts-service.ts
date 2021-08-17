@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEventType, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Post} from "./post.model";
-import {catchError, map} from "rxjs/operators";
+import {catchError, map, tap} from "rxjs/operators";
 import {Subject, throwError} from "rxjs";
 
 
@@ -17,17 +17,25 @@ export class PostsService {
     const postData: Post = {title: title, content: content};
     this.http
       .post<{ name: string }>(
-        'https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json', postData
+        'https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json', postData,
+        {observe: 'response'}
       ).subscribe(
       responseData => {
         console.log(responseData);
       }, error => {
-        this.error = error.message;
+        this.error.next(error.message)
       });
   }
 
   fetchPosts() {
-    return this.http.get<{ [key: string]: Post }>('https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json')
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'pretty');
+    searchParams = searchParams.append('custom', 'key');
+    return this.http.get<{ [key: string]: Post }>('https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json',
+      {
+        headers: new HttpHeaders({'Custom-header': 'hello'}),
+        params: searchParams
+      })
       .pipe(
         map(responseData => {
           const postsArray = [];
@@ -49,7 +57,16 @@ export class PostsService {
   }
 
   deletePosts() {
-    return this.http.delete('https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json');
+    return this.http.delete('https://angular-guide-17a98-default-rtdb.firebaseio.com/' + 'posts.json', {
+        observe: 'events'
+      }
+    ).pipe(tap(event => {
+      console.log(event)
+      if (event.type === HttpEventType.Response) {
+        console.log(event.body);
+      }
+
+    }));
   }
 
 
