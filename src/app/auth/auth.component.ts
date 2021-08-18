@@ -42,10 +42,9 @@ export class AuthComponent implements OnInit {
           console.log(response);
           this.isLoading = false;
         },
-        error => {
-          console.log(error);
-          // @ts-ignore
-          this.error = 'An error occurred!';
+        errorMessage => {
+          console.log(errorMessage);
+          this.error = errorMessage;
           this.isLoading = false;
         });
     }
