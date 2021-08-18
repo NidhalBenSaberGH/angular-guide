@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {from} from "rxjs";
-import {AuthService} from "./auth.service";
+import {Observable} from "rxjs";
+import {AuthResponseData, AuthService} from "./auth.service";
 
 @Component({
   selector: 'app-auth',
@@ -33,21 +33,45 @@ export class AuthComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
 
+    let authObs: Observable<AuthResponseData>;
+
     this.isLoading = true;
 
     if (this.isLoginMode) {
-
+      authObs = this.authService.login(email, password);
+      // .subscribe(response => {
+      //     console.log(response);
+      //     this.isLoading = false;
+      //   },
+      //   errorMessage => {
+      //     console.log(errorMessage);
+      //     this.error = errorMessage;
+      //     this.isLoading = false;
+      //   });
     } else {
-      this.authService.signUp(email, password).subscribe(response => {
-          console.log(response);
-          this.isLoading = false;
-        },
-        errorMessage => {
-          console.log(errorMessage);
-          this.error = errorMessage;
-          this.isLoading = false;
-        });
+      authObs = this.authService.signUp(email, password);
+      // .subscribe(response => {
+      //     console.log(response);
+      //     this.isLoading = false;
+      //   },
+      //   errorMessage => {
+      //     console.log(errorMessage);
+      //     this.error = errorMessage;
+      //     this.isLoading = false;
+      //   });
     }
+
+    // instead of redundant subscribe block we use observable
+    authObs.subscribe(response => {
+        console.log(response);
+        this.isLoading = false;
+      },
+      errorMessage => {
+        console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      });
     form.reset();
   }
+
 }
