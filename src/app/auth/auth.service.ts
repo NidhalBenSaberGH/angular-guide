@@ -22,6 +22,7 @@ export class AuthService {
 
   // @ts-ignore
   user :BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -61,7 +62,19 @@ export class AuthService {
     // @ts-ignore
     this.user.next(null);
     this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
   }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
+
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An Unknown error occurred!';
@@ -91,11 +104,9 @@ export class AuthService {
       expirationData
     );
 
-
-    localStorage.setItem('userData', JSON.stringify(user));
-
     this.user.next(user);
-
+    this.autoLogout(expiresIn * 1000);
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 
   autoLogin() {
@@ -113,6 +124,8 @@ export class AuthService {
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
+      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration * 1000);
     }
   }
 
