@@ -13,7 +13,7 @@ export class AuthComponent implements OnInit {
 
   isLoginMode = true;
   isLoading = false;
-  error = null;
+  error: any;
 
   constructor(private authService: AuthService,
               private router: Router
@@ -78,6 +78,10 @@ export class AuthComponent implements OnInit {
       });
 
     form.reset();
+    this.error = null;
+  }
+
+  onHandleError() {
     this.error = null;
   }
 
