@@ -9,15 +9,14 @@ import { BetterHighlightDirective } from './shared/better-highlight/better-highl
 import { UnlessDirective } from './unless.directive';
 import {ShoppingListService} from "./shopping-list/shopping-list.service";
 import {AppRoutingModule} from "./app-routing.module";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RecipeService} from "./recipes/recipe.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { AuthComponent } from './auth/auth.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import {AlertComponent} from "./shared/alert/alert.component";
 import {RecipesModule} from "./recipes/recipes.module";
 import {ShoppingListModule} from "./shopping-list/shopping-list.module";
 import {SharedModule} from "./shared/shared.module";
+import {AuthModule} from "./auth/auth.module";
 
 @NgModule({
   declarations: [
@@ -25,19 +24,17 @@ import {SharedModule} from "./shared/shared.module";
     HeaderComponent,
     BasicHighlightDirective,
     BetterHighlightDirective,
-    UnlessDirective,
-    AuthComponent
+    UnlessDirective
   ],
   imports: [
     BrowserModule,
     NgbModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     RecipesModule,
     ShoppingListModule,
-    SharedModule
+    SharedModule,
+    AuthModule
   ],
   providers: [ShoppingListService, RecipeService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
