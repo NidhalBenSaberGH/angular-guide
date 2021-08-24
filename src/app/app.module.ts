@@ -31,10 +31,10 @@ import {AuthModule} from "./auth/auth.module";
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
-    RecipesModule,
-    ShoppingListModule,
+    // RecipesModule,
+    // ShoppingListModule,
     SharedModule,
-    AuthModule
+    // AuthModule
   ],
   providers: [ShoppingListService, RecipeService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
