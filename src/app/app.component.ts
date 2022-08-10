@@ -6,7 +6,8 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
-  Validators
+  Validators,
+  FormBuilder
 } from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {delay, map} from "rxjs/operators";
@@ -20,7 +21,14 @@ export class AppComponent implements OnInit {
   genders = ['male', 'female'];
 
   signupForm!: FormGroup;
+  
+  simpleForm!: FormGroup;
+  
   forbiddenUserNames = ['Chris', 'Anna'];
+  
+  constructor(private formBuilder: FormBuilder) {
+	  
+  }
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -31,6 +39,12 @@ export class AppComponent implements OnInit {
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     });
+	
+	this.simpleForm = this.formBuilder.group({
+	firstName: ['', Validators.required], 
+	lastName: ['', Validators.required],
+	zip: ['', [Validators.required, Validators.minLength(4), Validators.pattern("^[0-9]*$")]],
+	});
 
     this.signupForm.valueChanges.subscribe(
       (value) => console.log(value)
@@ -59,6 +73,10 @@ export class AppComponent implements OnInit {
 
   onsubmit() {
     console.log(this.signupForm);
+  }
+  
+  onSubmitSimple(): void {
+	  console.log(this.simpleForm);
   }
 
   onAddHobby() {

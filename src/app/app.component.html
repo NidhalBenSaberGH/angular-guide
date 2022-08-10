@@ -64,6 +64,57 @@
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
+	  <br><br>
+	 <form [formGroup]="simpleForm" (ngSubmit)="onSubmitSimple()">
+          <div class="form-group">
+            <label for="firstName">firstName</label>
+            <input
+              type="text"
+              id="firstName"
+              class="form-control"
+              formControlName="firstName"
+            >
+            <span
+              *ngIf="!simpleForm.get('firstName')?.valid && simpleForm.get('firstName')?.touched"
+              class="text-danger">
+              <span *ngIf="simpleForm.get('firstName')?.errors?.required">This field is required!</span>
+            </span>
+
+
+          </div>
+         <div class="form-group">
+            <label for="lastName">lastName</label>
+            <input
+              type="text"
+              id="lastName"
+              class="form-control"
+              formControlName="lastName">
+            <span
+              *ngIf="!simpleForm.get('lastName')?.valid && simpleForm.get('lastName')?.touched"
+              class="text-danger">
+              <span *ngIf="simpleForm.get('lastName')?.errors?.required">This field is required!</span>
+
+            </span>
+        </div>
+		<div class="form-group">
+            <label for="zip">zip</label>
+            <input
+              type="text"
+              id="zip"
+              class="form-control"
+              formControlName="zip">
+            <span
+              *ngIf="!simpleForm.get('zip')?.valid && simpleForm.get('zip')?.touched"
+              class="text-danger">
+              <span *ngIf="simpleForm.get('zip')?.errors?.required">This field is required!</span>
+			  <span *ngIf="simpleForm.get('zip')?.errors?.minlength">min length is 4 !</span>
+			   <span *ngIf="simpleForm.get('zip')?.errors?.pattern">Should be  numeric !</span>
+            </span>
+        </div>
+		        <button class="btn btn-primary" type="submit">Submit</button>
+
+	  </form>
+	  
     </div>
   </div>
 </div>
